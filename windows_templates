@@ -1,0 +1,167 @@
+- name: Browser History
+  query_dsl: '""'
+  query_string: source_short=WEBHIST
+  supported_os: []
+- name: Windows Logon (Type 3 / Remote)
+  query_dsl: '""'
+  query_string: data_type:"windows:evtx:record" AND event_identifier:4624 AND xml_string:"/LogonType\"\>3/"
+  supported_os: []
+- name: Windows Logon (Type 2 / Local)
+  query_dsl: '""'
+  query_string: data_type:"windows:evtx:record" AND event_identifier:4624 AND xml_string:"/LogonType\"\>2/"
+  supported_os: []
+- name: Windows Logon (Type 4 / Batch)
+  query_dsl: '""'
+  query_string: data_type:"windows:evtx:record" AND event_identifier:4624 AND xml_string:"/LogonType\"\>4/"
+  supported_os: []
+- name: Windows Logon (Type 5 / Service Logon)
+  query_dsl: '""'
+  query_string: data_type:"windows:evtx:record" AND event_identifier:4624 AND xml_string:"/LogonType\"\>5/"
+  supported_os: []
+- name: Windows Logon (Type 8 / Network Cleartext)
+  query_dsl: '""'
+  query_string: data_type:"windows:evtx:record" AND event_identifier:4624 AND xml_string:"/LogonType\"\>8/"
+  supported_os: []
+- name: Windows Logon (Type 7 / Unlock)
+  query_dsl: '""'
+  query_string: data_type:"windows:evtx:record" AND event_identifier:4624 AND xml_string:"/LogonType\"\>7/"
+  supported_os: []
+- name: Windows Logon (Type 9 / RunAs)
+  query_dsl: '""'
+  query_string: data_type:"windows:evtx:record" AND event_identifier:4624 AND xml_string:"/LogonType\"\>9/"
+  supported_os: []
+- name: Windows Logon (Type 10 / RDP / Remote Interactive)
+  query_dsl: '""'
+  query_string: data_type:"windows:evtx:record" AND event_identifier:4624 AND xml_string:"/LogonType\"\>10/"
+  supported_os: []
+- name: Windows Logon (Type 11 / Cached)
+  query_dsl: '""'
+  query_string: data_type:"windows:evtx:record" AND event_identifier:4624 AND xml_string:"/LogonType\"\>11/"
+  supported_os: []
+- name: Windows Run Keys Added
+  query_dsl: '""'
+  query_string: data_type:"windows:registry:key_value" AND source_append:"Run Key"
+    AND timestamp_desc:"Content Modification Time"
+  supported_os: []
+- name: Windows Scheduled Tasks
+  query_dsl: '""'
+  query_string: data_type:"windows:tasks:job" AND timestamp_desc:"Last Time Executed"
+    OR timestamp_desc:"Scheduled to start"
+  supported_os: []
+- name: Windows EXE/DLL Activity
+  query_dsl: '""'
+  query_string: (data_type:"fs:stat" AND (filename:*.exe OR filename:*.dll))
+  supported_os: []
+- name: Opened/Saved/Downloaded Files via OpenSaveMRU
+  query_dsl: '""'
+  query_string: data_type:"windows:registry:key_value" AND message:"*Shell item path*"
+    AND *OpenSave*
+  supported_os: []
+- name: Execution from Desktop (UserAssist)
+  query_dsl: '""'
+  query_string: data_type:"windows:registry:userassist"
+  supported_os: []
+- name: Program Execution via RunMRU
+  query_dsl: '""'
+  query_string: '*RunMRU*'
+  supported_os: []
+- name: Program Execution via LastVisited MRU
+  query_dsl: '""'
+  query_string: data_type:"windows:registry:key_value" AND key_path:"*LastVisitedPidlMRU"
+  supported_os: []
+- name: Program Execution (via AppCompatCache)
+  query_dsl: '""'
+  query_string: data_type:"windows:registry:appcompatcache"
+  supported_os: []
+- name: Program Execution via Win7 Jumplist
+  query_dsl: '""'
+  query_string: '*AutomaticDestination* AND shell_item_path:"*"'
+  supported_os: []
+- name: Windows Event Logs
+  query_dsl: '""'
+  query_string: data_type:"windows:evtx:record"
+  supported_os: []
+- name: Windows Services
+  query_dsl: '""'
+  query_string: source_name:"Service Control Manager" NOT "Volume Shadow Copy" NOT
+    "Shadow Copy Provider" NOT "Disk Defragmenter"
+  supported_os: []
+- name: Windows Services (PsExec)
+  query_dsl: '""'
+  query_string: source_name:"Service Control Manager" NOT "Volume Shadow Copy" NOT
+    "Shadow Copy Provider" NOT "Disk Defragmenter" AND psexec
+  supported_os: []
+- name: PsExec
+  query_dsl: '""'
+  query_string: '*psexec*'
+  supported_os: []
+- name: Opened Documents & Files via RecentDocs
+  query_dsl: '""'
+  query_string: key_path:"*RecentDocs*" AND "MRU Value"
+  supported_os: []
+- name: Access to Office Files (PDF, Word, Excel, PowerPoint)
+  query_dsl: '""'
+  query_string: timestamp_desc:"Last Access TIme" OR timestamp_desc:"Creation Time"
+    AND *docx* OR "doc" OR "xslx" OR "pdf" OR "pst" OR "ppt" OR  "pptx"
+  supported_os: []
+- name: Created/Opened Files/Folders via ShellBag
+  query_dsl: '""'
+  query_string: parser:"winreg/bagmru/shell_items"
+  supported_os: []
+- name: Opened Files via LNK
+  query_dsl: '""'
+  query_string: data_type:"windows:lnk:link"
+  supported_os: []
+- name: Deleted Files (windows:metadata:deleted_item)
+  query_dsl: '""'
+  query_string: data_type:"windows:metadata:deleted_item"
+  supported_os: []
+- name: Connected Networks via Network History
+  query_dsl: '""'
+  query_string: '*NetworkList* AND *signatures*'
+  supported_os: []
+- name: Cookies
+  query_dsl: '""'
+  query_string: '*cookies* AND !"HKEY*"'
+  supported_os: []
+- name: Search Engine URLs (can contain search terms)
+  query_dsl: '""'
+  query_string: '"search?q="'
+  supported_os: []
+- name: USB Devices (Test)
+  query_dsl: '""'
+  query_string: '*USBSTOR* OR "*USB*"'
+  supported_os: []
+- name: USB & Network Mounts via (winreg/explorer_mountpoints2)
+  query_dsl: '""'
+  query_string: parser:"winreg/explorer_mountpoints2"
+  supported_os: []
+- name: Windows Account Created
+  query_dsl: '""'
+  query_string: data_type:"windows:evtx:record" AND event_identifier:4720
+  supported_os: []
+- name: Windows Password Reset
+  query_dsl: '""'
+  query_string: data_type:"windows:evtx:record" AND event_identifier:4724
+  supported_os: []
+- name: Windows Account Deleted
+  query_dsl: '""'
+  query_string: data_type:"windows:evtx:record" AND event_identifier:4726
+  supported_os: []
+- name: Windows Failed Logon
+  query_dsl: '""'
+  query_string: data_type:"windows:evtx:record" AND event_identifier:4625
+  supported_os: []
+- name: Windows Account Locked
+  query_dsl: '""'
+  query_string: data_type:"windows:evtx:record" AND event_identifier:4740
+  supported_os: []
+- name: Windows Logout / Anonymous Logon
+  query_dsl: '""'
+  query_string: data_type:"windows:evtx:record" AND (event_identifier:4634 OR event_identifier:4647
+    OR event_identifier:538)
+  supported_os: []
+- name: Windows Account Password Change
+  query_dsl: '""'
+  query_string: data_type:"windows:evtx:record" AND (event_identifier:4723 OR event_identifier:4724)
+  supported_os: []
